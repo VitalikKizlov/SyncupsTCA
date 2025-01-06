@@ -32,7 +32,22 @@ struct SyncUpsListView: View {
                 action: \.addSyncUp
                 ),
             content: { addSyncUpStore in
-                SyncUpFormView(store: addSyncUpStore)
+                NavigationStack {
+                    SyncUpFormView(store: addSyncUpStore)
+                        .navigationTitle(Text("New Sync-up"))
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Discard") {
+                                    store.send(.discardButtonTapped)
+                                }
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Add") {
+                                    store.send(.confirmAddButtonTapped)
+                                }
+                            }
+                        }
+                }
             }
         )
         .toolbar {

@@ -20,6 +20,8 @@ struct SyncUpsList {
     enum Action {
         case addSyncUpButtonTapped
         case addSyncUp(PresentationAction<SyncUpForm.Action>)
+        case confirmAddButtonTapped
+        case discardButtonTapped
         case onDelete(IndexSet)
         case syncUpTapped(id: SyncUp.ID)
     }
@@ -31,6 +33,14 @@ struct SyncUpsList {
                 state.addSyncUp = SyncUpForm.State(syncUp: SyncUp(id: SyncUp.ID()))
                 return .none
             case .addSyncUp:
+                return .none
+            case .confirmAddButtonTapped:
+                guard let newSyncUp = state.addSyncUp?.syncUp else { return .none }
+                state.syncUps.append(newSyncUp)
+                state.addSyncUp = nil
+                return .none
+            case .discardButtonTapped:
+                state.addSyncUp = nil
                 return .none
             case .onDelete(let indexSet):
                 state.syncUps.remove(atOffsets: indexSet)
