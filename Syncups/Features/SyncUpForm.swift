@@ -28,6 +28,8 @@ struct SyncUpForm {
         case onDeleteAttendees(IndexSet)
     }
 
+    @Dependency(\.uuid) var uuid
+
     var body: some ReducerOf<Self> {
 
         BindingReducer()
@@ -38,7 +40,7 @@ struct SyncUpForm {
                 return .none
 
             case .addAttendeeButtonTapped:
-                let attendee = Attendee(id: Attendee.ID())
+                let attendee = Attendee(id: uuid())
                 state.syncUp.attendees.append(attendee)
                 state.focus = .attendee(attendee.id)
                 return .none
@@ -49,9 +51,9 @@ struct SyncUpForm {
                     !state.syncUp.attendees.isEmpty,
                     let firstIndex = indices.first
                 else {
-                    state.syncUp.attendees.append(
-                        Attendee(id: Attendee.ID())
-                    )
+                    let newAttendee = Attendee(id: uuid())
+                    state.syncUp.attendees.append(newAttendee)
+                    state.focus = .attendee(newAttendee.id)
                     return .none
                 }
                 let index = min(firstIndex, state.syncUp.attendees.count - 1)

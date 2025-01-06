@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct SyncUpsListView: View {
-  let store: StoreOf<SyncUps>
+  let store: StoreOf<SyncUpsList>
 
 
   var body: some View {
@@ -42,9 +42,9 @@ struct SyncUpsListView: View {
     NavigationStack {
         SyncUpsListView(
             store: .init(
-                initialState: SyncUps.State(syncUps: [.mock]),
+                initialState: SyncUpsList.State(syncUps: [.mock]),
                 reducer: {
-                    SyncUps()
+                    SyncUpsList()
                         ._printChanges()
                 }
             )

@@ -1,6 +1,6 @@
 //
-//  SyncUps.swift
-//  SyncUps
+//  SyncUpsList.swift
+//  SyncUpsList
 //
 //  Created by Vitalii Kizlov on 01.12.2024.
 //
@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct SyncUps {
+struct SyncUpsList {
 
     @ObservableState
     struct State: Equatable {
