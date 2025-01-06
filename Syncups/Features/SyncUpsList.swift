@@ -14,10 +14,12 @@ struct SyncUpsList {
     @ObservableState
     struct State: Equatable {
         var syncUps: IdentifiedArrayOf<SyncUp> = []
+        @Presents var addSyncUp: SyncUpForm.State?
     }
 
     enum Action {
         case addSyncUpButtonTapped
+        case addSyncUp(PresentationAction<SyncUpForm.Action>)
         case onDelete(IndexSet)
         case syncUpTapped(id: SyncUp.ID)
     }
@@ -26,6 +28,9 @@ struct SyncUpsList {
         Reduce { state, action in
             switch action {
             case .addSyncUpButtonTapped:
+                state.addSyncUp = SyncUpForm.State(syncUp: SyncUp(id: SyncUp.ID()))
+                return .none
+            case .addSyncUp:
                 return .none
             case .onDelete(let indexSet):
                 state.syncUps.remove(atOffsets: indexSet)
@@ -33,6 +38,9 @@ struct SyncUpsList {
             case .syncUpTapped(id: let id):
                 return .none
             }
+        }
+        .ifLet(\.$addSyncUp, action: \.addSyncUp) {
+            SyncUpForm()
         }
     }
 }

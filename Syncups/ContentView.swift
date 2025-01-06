@@ -9,14 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        SyncUpsListView(
-            store: .init(
-                initialState: SyncUpsList.State(),
-                reducer: {
-                    SyncUpsList()
-                }
+        NavigationStack {
+            SyncUpsListView(
+                store: .init(
+                    initialState: SyncUpsList.State(),
+                    reducer: {
+                        SyncUpsList()
+                    }
+                )
             )
-        )
+        }
     }
 }
 
