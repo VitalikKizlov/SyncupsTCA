@@ -6,12 +6,24 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct SyncupsApp: App {
+
+    @MainActor
+    static let store = Store(
+        initialState: SyncUpsList.State(),
+        reducer: {
+            SyncUpsList()
+        }
+    )
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                SyncUpsListView(store: Self.store)
+            }
         }
     }
 }

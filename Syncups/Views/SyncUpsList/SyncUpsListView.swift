@@ -62,10 +62,12 @@ struct SyncUpsListView: View {
 }
 
 #Preview {
+    @Shared(.syncUps) var syncUps = [.mock]
+
     NavigationStack {
         SyncUpsListView(
             store: .init(
-                initialState: SyncUpsList.State(syncUps: [.mock]),
+                initialState: SyncUpsList.State(),
                 reducer: {
                     SyncUpsList()
                         ._printChanges()

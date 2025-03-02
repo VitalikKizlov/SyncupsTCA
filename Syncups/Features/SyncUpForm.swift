@@ -61,5 +61,6 @@ struct SyncUpForm {
                 return .none
             }
         }
+        ._printChanges()
     }
 }

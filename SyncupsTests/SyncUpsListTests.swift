@@ -40,7 +40,7 @@ struct SyncUpsListTests {
         }
 
         await store.send(.confirmAddButtonTapped) {
-            $0.syncUps = [editedSyncUp]
+            $0.$syncUps.withLock { $0 = [editedSyncUp] }
             $0.addSyncUp = nil
         }
     }
@@ -70,27 +70,25 @@ struct SyncUpsListTests {
         await store.send(\.addSyncUp.binding.syncUp, editedSyncUp)
 
         await store.send(.confirmAddButtonTapped) {
-            $0.syncUps = [editedSyncUp]
+            $0.$syncUps.withLock { $0 = [editedSyncUp] }
         }
     }
 
     @Test
     func deletion() async {
-        let store = TestStore(
-            initialState: SyncUpsList.State(
-                syncUps: [
-                    SyncUp(
-                        id: SyncUp.ID(),
-                        title: "Point-Free Morning Sync"
-                    )
-                ]
+        @Shared(.syncUps) var syncUps = [
+            SyncUp(
+                id: SyncUp.ID(),
+                title: "Point-Free Morning Sync"
             )
-        ) {
+        ]
+
+        let store = TestStore(initialState: SyncUpsList.State()) {
             SyncUpsList()
         }
 
         await store.send(.onDelete([0])) {
-            $0.syncUps = []
+            $0.$syncUps.withLock { $0 = [] }
         }
     }
 }
